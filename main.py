@@ -47,7 +47,7 @@ starter_cell = field.get_cell(starter_coords)
 gui.click(starter_cell.screen_coords.x + Globals.cell_scan_offset, starter_cell.screen_coords.y + Globals.cell_scan_offset)
 
 delay = config_parser.get_animation_delay()
-time.sleep(delay)
+time.sleep(delay * 2)
 
 sc.update_field_proximity(field, starter_coords)
 while True:
