@@ -4,8 +4,6 @@ import pyautogui as gui
 
 from globals import Globals
 
-gui.click(config_parser.get_window_coords().x, config_parser.get_window_coords().y)
-
 sc = Scanner()
 sc.wait_for_game()
 field = sc.count_field()
