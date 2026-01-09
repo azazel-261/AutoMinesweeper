@@ -1,5 +1,5 @@
 # AutoMinesweeper
-This script is designed to play google's minesweeper game in the browser window. You can find it by simply typing for "Minesweeper" in the google search box
+This script is designed to play google's minesweeper game in the browser window. You can find it by simply typing "Minesweeper" in the google search box
 
 ## Setting up
 
