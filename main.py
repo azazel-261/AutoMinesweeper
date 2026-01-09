@@ -1,6 +1,7 @@
 from scanner import *
 from local_types import *
 import pyautogui as gui
+import config_parser
 
 from globals import Globals
 
@@ -45,7 +46,8 @@ starter_coords = Vector2(7, 7)
 starter_cell = field.get_cell(starter_coords)
 gui.click(starter_cell.screen_coords.x + Globals.cell_scan_offset, starter_cell.screen_coords.y + Globals.cell_scan_offset)
 
-time.sleep(2)
+delay = config_parser.get_animation_delay()
+time.sleep(delay)
 
 sc.update_field_proximity(field, starter_coords)
 while True:
@@ -54,7 +56,7 @@ while True:
     if candidate is not None:
         coords = candidate[0].screen_coords
         gui.middleClick(coords.x + Globals.cell_scan_offset, coords.y + Globals.cell_scan_offset)
-        time.sleep(1.5)
+        time.sleep(delay)
         sc.update_field_proximity(field, candidate[1])
     else: exit(-1)
     visualize_field(field)

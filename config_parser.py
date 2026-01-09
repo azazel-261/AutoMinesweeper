@@ -12,3 +12,6 @@ def get_game_coords() -> Vector2:
 
 def get_field_size() -> Vector2:
     return Vector2(int(config['FIELD']['width']), int(config['FIELD']['height']))
+
+def get_animation_delay() -> float:
+    return float(config['FIELD']['animation_delay'])
