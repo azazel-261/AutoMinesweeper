@@ -28,9 +28,7 @@ def is_candidate(pos: Vector2):
     adjacent = [field.get_cell(_) for _ in field.get_adjacent(pos)]
     marked = field.count_marked(adjacent)
     opened = field.count_open(adjacent)
-    if field.get_cell(pos).number == marked and marked + opened < len(adjacent) and field.get_cell(pos).opened and field.get_cell(pos) not in clicked\
-            :
-        print(f"Candidate: {len(adjacent)}:{opened}:{marked} - {pos.x}, {pos.y}")
+    if field.get_cell(pos).number == marked and marked + opened < len(adjacent) and field.get_cell(pos).opened and field.get_cell(pos) not in clicked:
         return True
     return False
 

@@ -129,16 +129,17 @@ class Scanner:
                 field_cell.number = tmp_cell.number
 
     def update_field_proximity(self, field: local_types.Field, center: local_types.Vector2):
-        current_upd = 0
-        prev_upd = 0
         shot = gui.screenshot()
         for radius in range(0, config_parser.get_field_size().x):
+            current_upd = 0
             if radius == 0:
                 field_cell = field.get_cell(center)
                 if field_cell.opened or field_cell.marked:
                     continue
                 current_upd += 1
                 cell = self.scan_cell(field_cell.screen_coords, shot)
+                if not cell.opened:
+                    continue
                 field_cell.opened = cell.opened
                 field_cell.number = cell.number
             else:
@@ -151,6 +152,8 @@ class Scanner:
                     if field_cell.opened or field_cell.marked:
                         continue
                     cell = self.scan_cell(field_cell.screen_coords, shot)
+                    if not cell.opened:
+                        continue
                     field_cell.opened = cell.opened
                     field_cell.number = cell.number
                     current_upd += 1
@@ -163,6 +166,8 @@ class Scanner:
                     if field_cell.opened or field_cell.marked:
                         continue
                     cell = self.scan_cell(field_cell.screen_coords, shot)
+                    if not cell.opened:
+                        continue
                     field_cell.opened = cell.opened
                     field_cell.number = cell.number
                     current_upd += 1
@@ -175,6 +180,8 @@ class Scanner:
                     if field_cell.opened or field_cell.marked:
                         continue
                     cell = self.scan_cell(field_cell.screen_coords, shot)
+                    if not cell.opened:
+                        continue
                     field_cell.opened = cell.opened
                     field_cell.number = cell.number
                     current_upd += 1
@@ -186,9 +193,15 @@ class Scanner:
                     if field_cell.opened or field_cell.marked:
                         continue
                     cell = self.scan_cell(field_cell.screen_coords, shot)
+                    if not cell.opened:
+                        continue
                     field_cell.opened = cell.opened
                     field_cell.number = cell.number
                     current_upd += 1
+            if not current_upd:
+                print(radius)
+                return
+        print("Full proximity scan complete")
 
 
 
