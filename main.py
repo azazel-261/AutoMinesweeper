@@ -35,12 +35,20 @@ def is_candidate(pos: Vector2):
     return False
 
 def calculate_candidate() -> tuple[Cell, Vector2] | None:
+    candidates = []
     for y, row in enumerate(field.cells):
         for x, cell in enumerate(row):
             if is_candidate(Vector2(x, y)):
-                clicked.add(cell)
-                return cell, Vector2(x, y)
-    return None
+                candidates.append((cell, Vector2(x, y)))
+    if not len(candidates):
+        return None
+    adjacent = []
+    for cell, pos in candidates:
+        _adjacent = [field.get_cell(_) for _ in field.get_adjacent(pos)]
+        marked = field.count_marked(_adjacent)
+        opened = field.count_open(_adjacent)
+        adjacent.append(len(_adjacent) - marked - opened)
+    return candidates[adjacent.index(max(adjacent))]
 
 starter_coords = Vector2(7, 7)
 starter_cell = field.get_cell(starter_coords)

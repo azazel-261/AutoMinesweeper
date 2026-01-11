@@ -129,26 +129,87 @@ class Scanner:
                 field_cell.number = tmp_cell.number
 
     def update_field_proximity(self, field: local_types.Field, center: local_types.Vector2):
-        updated = set()
         current_upd = 0
         prev_upd = 0
         shot = gui.screenshot()
-        for proximity in range(3, config_parser.get_field_size().x * 2 + 1, 2):
-            radius = (proximity - 1) // 2
-            for x in range(center.x - radius, center.x + radius + 1):
-                if x < 0 or x >= config_parser.get_field_size().x:
+        for radius in range(0, config_parser.get_field_size().x):
+            if radius == 0:
+                field_cell = field.get_cell(center)
+                if field_cell.opened or field_cell.marked:
                     continue
-                for y in range(center.y - radius, center.y + radius + 1):
-                    if y < 0 or y >= config_parser.get_field_size().y:
-                        continue
+                current_upd += 1
+                cell = self.scan_cell(field_cell.screen_coords, shot)
+                field_cell.opened = cell.opened
+                field_cell.number = cell.number
+            else:
+                # Top row
+                y = center.y + radius
+                for x in range(center.x - radius, center.x + radius + 1):
                     field_cell = field.get_cell(local_types.Vector2(x, y))
-                    if field_cell.opened or field_cell in updated or field_cell.marked:
+                    if field_cell is None:
                         continue
-                    updated.add(field_cell)
+                    if field_cell.opened or field_cell.marked:
+                        continue
+                    cell = self.scan_cell(field_cell.screen_coords, shot)
+                    field_cell.opened = cell.opened
+                    field_cell.number = cell.number
                     current_upd += 1
-                    tmp_cell = self.scan_cell(field_cell.screen_coords, shot)
-                    field_cell.opened = tmp_cell.opened
-                    field_cell.number = tmp_cell.number
-            if current_upd == prev_upd:
-                return
-            prev_upd = current_upd
+                # Bottom row
+                y = center.y - radius
+                for x in range(center.x - radius, center.x + radius + 1):
+                    field_cell = field.get_cell(local_types.Vector2(x, y))
+                    if field_cell is None:
+                        continue
+                    if field_cell.opened or field_cell.marked:
+                        continue
+                    cell = self.scan_cell(field_cell.screen_coords, shot)
+                    field_cell.opened = cell.opened
+                    field_cell.number = cell.number
+                    current_upd += 1
+                # Left
+                x = center.x - radius
+                for y in range(center.y - radius + 1, center.y + radius):
+                    field_cell = field.get_cell(local_types.Vector2(x, y))
+                    if field_cell is None:
+                        continue
+                    if field_cell.opened or field_cell.marked:
+                        continue
+                    cell = self.scan_cell(field_cell.screen_coords, shot)
+                    field_cell.opened = cell.opened
+                    field_cell.number = cell.number
+                    current_upd += 1
+                x = center.x + radius
+                for y in range(center.y - radius + 1, center.y + radius):
+                    field_cell = field.get_cell(local_types.Vector2(x, y))
+                    if field_cell is None:
+                        continue
+                    if field_cell.opened or field_cell.marked:
+                        continue
+                    cell = self.scan_cell(field_cell.screen_coords, shot)
+                    field_cell.opened = cell.opened
+                    field_cell.number = cell.number
+                    current_upd += 1
+
+
+
+
+
+        # for proximity in range(3, config_parser.get_field_size().x * 2 + 1, 2):
+        #     radius = (proximity - 1) // 2
+        #     for x in range(center.x - radius, center.x + radius + 1):
+        #         if x < 0 or x >= config_parser.get_field_size().x:
+        #             continue
+        #         for y in range(center.y - radius, center.y + radius + 1):
+        #             if y < 0 or y >= config_parser.get_field_size().y:
+        #                 continue
+        #             field_cell = field.get_cell(local_types.Vector2(x, y))
+        #             if field_cell.opened or field_cell in updated or field_cell.marked:
+        #                 continue
+        #             updated.add(field_cell)
+        #             current_upd += 1
+        #             tmp_cell = self.scan_cell(field_cell.screen_coords, shot)
+        #             field_cell.opened = tmp_cell.opened
+        #             field_cell.number = tmp_cell.number
+        #     if current_upd == prev_upd:
+        #         return
+        #     prev_upd = current_upd
